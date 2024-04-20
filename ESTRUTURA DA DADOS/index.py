@@ -1,13 +1,15 @@
 from models.contato import Contato
 from models.mensagem import Mensagem
 from ui.menu import imprimirMenuPrincipal, limparTela
-
+from queue import Queue
+from datetime import datetime
 
 
 
 
 contatos = []
-
+mensagem = Queue()
+cont= 0
 # FUNÇÕES
 def AdicionarContato():
  
@@ -84,7 +86,22 @@ def EditarContato():
     input("[APERTE ENTER PARA CONTINUAR]")
     limparTela()
 
-def EscreverMensagem():
+def salvar_mensagem():
+    elemento = input("Digite a mensagem que deseja adicionar à fila: ")
+    data_hora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    mensagem.put([elemento, data_hora])
+    print("Elemento adicionado à fila.")
+    
+
+def imprimir_mensagem():
+    print("Mensagem na fila:\n")
+    for elemento in list(mensagem.queue):
+            print(elemento)
+    print(mensagem.qsize())
+    print("\nMensagem impressa.")
+    input("[APERTE ENTER PARA CONTINUAR]")
+
+def Enviarmensagem():
     # Exemplo de criação de uma mensagem
 
     usuario_encontrado = False
@@ -97,13 +114,25 @@ def EscreverMensagem():
             break
 
     if usuario_encontrado == True:
-        msg = input("digite aqui sua mensagem: ")
-        if "mensagem" in contato:
-            contato["mensagem"].append(msg)   
-        
-        else: 
-            contato ["mensagem"] = [msg]    
-        print("Mensagem Criada com Sucesso!") 
+        print("Mensagens da fila: \n")
+        for elemento in list(mensagem.queue):
+            print(elemento,"\n")
+        escolha = input("Você deseja enviar a primeira mensagem S/N: ")
+        msg = []
+        if escolha == "S":        
+            
+            msg.append(mensagem.get())
+
+            if "mensagem" in contato:
+                contato["mensagem"].append(msg) 
+            
+            else: 
+                contato ["mensagem"] = [msg]    
+            print("Mensagem Criada com Sucesso!")
+        else:
+            print("mensagem não enviada")
+            input("[APERTE ENTER PARA CONTINUAR]")
+            Enviarmensagem()
     else:
         print("Usuário não encontrado")
     
@@ -118,20 +147,39 @@ print("===== SISTEMA DE MENSAGENS =====\n")
 
 fimPrograma = False
 
+def escrever_mensagem():
+    while True:
+        limparTela()
+        opcao = input("Escolha uma opção:\n 1. escrever mensagem para a fila\n 2. Mostrar mensagens da fila\n 3. Voltar ao menu anterior\nOpção: ")
+        if opcao == '1':
+            salvar_mensagem()
+        elif opcao == '2':
+            imprimir_mensagem()
+        elif opcao == '3':
+            imprimirMenuPrincipal() 
+            break
+        else:
+            print("Opção inválida. Por favor, escolha uma opção válida.")
+            input("[APERTE ENTER PARA CONTINUAR]")
+            limparTela()
+
 while not fimPrograma:
+    limparTela()
     imprimirMenuPrincipal()
     opcao = input("Escolha uma das opções: ")
 
-    if opcao in ("0", "1", "2", "3", "4"):
+    if opcao in ("0", "1", "2", "3", "4","5"):
         
         if int(opcao) == 1:
             AdicionarContato()
-        elif int(opcao) == 2:
-            MostrarContatos()
+        elif int(opcao) == 2: 
+            escrever_mensagem()
         elif int(opcao) == 3:
-            EditarContato()
+            MostrarContatos()
         elif int(opcao) == 4:
-            EscreverMensagem()
+            EditarContato()
+        elif int(opcao) == 5:
+            Enviarmensagem()
         elif int(opcao) == 0:
             fimPrograma = True
     else:
