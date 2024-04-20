@@ -1,0 +1,261 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "inter", sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+:root {
+    --almost-white: #fffdfa;
+    --dark-blue: #00001A;
+    --gunmetal: #5E607A;
+    --vermillion: #F15d51;
+    --yellow: #E9AA52;
+    --silver: #C5C6CE;
+}
+
+body{
+    padding: 1.75rem 1rem;
+    background-color: var(--almost-white);
+}
+
+body.menu-open::before {
+    content: "";
+    position: fixed;
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(0, 0, 26, 0.5);
+    top: 0;
+    left: 0;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    max-width: 1110px;
+    margin-inline: auto;
+}
+
+header button {
+    border: none;
+    background: none;
+    width: fit-content;
+    cursor: pointer;    
+}
+
+header nav.mobile {
+    position: fixed;
+    background-color: var(--almost-white);
+    right: -16rem;
+    top: 0;
+    height: 100vh;
+    width: 16rem;
+    z-index: 999;
+
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    gap: 1.5rem;
+
+    transition: 0.7s;
+}
+
+header nav.mobile.abrir {
+    right: 0;
+}
+
+header nav button {
+    align-self: flex-end;
+    margin-bottom: 4rem;
+}
+
+header .mobile  a {
+    text-decoration: none;
+    color: var(--dark-blue);
+    font-size: 1.125rem;
+    line-height: 1.5rem;
+}
+
+header .desktop {
+    display: none;
+}
+
+main {
+    max-width: 1110px;
+    margin-inline: auto;
+}
+
+.primeira-secao {
+    margin-bottom: 4rem;
+}
+
+.primeira-secao img {
+    width: 100%;
+    margin-bottom: 1.5rem;
+}
+
+.primeira-secao h1 {
+    font-size: 2.5rem;
+    line-height: 100%;
+    color: var(--dark-blue);
+    margin-bottom: 1rem;
+}
+
+.primeira-secao p {
+    font-size: 0.9375rem;
+    line-height: 1.625rem;
+    color: var(--gunmetal);
+    margin-bottom: 1.5rem;
+}
+
+.primeira-secao button {
+    padding: 0.75rem 2rem;
+    background-color: var(--vermillion);
+    border: none;
+    text-transform: uppercase;
+    color: var(--almost-white);
+    font-weight: 700;
+    font-size: 0.875rem;
+    letter-spacing: 0.275rem;
+    line-height: 1.5rem;
+}
+
+.segunda-secao {
+    background-color: var(--dark-blue);
+    margin-bottom: 4rem;
+    padding: 1.5rem 1.1rem;
+}
+
+.margin-border-padding {
+    border-bottom: 1px solid var(--gunmetal);
+    margin-bottom: 1.75rem;
+    padding-bottom: 1.75rem;
+}
+
+.segunda-secao h2 {
+    color: var(--yellow);
+    font-size: 2rem;
+    line-height: 100%;
+    margin-bottom: 2.2rem;
+}
+
+.segunda-secao h3 {
+    color: var(--almost-white);
+    font-size: 1.25rem;
+    line-height: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.segunda-secao p {
+    color: var(--silver);
+    font-size: 0.9375rem;
+    line-height: 1.625rem;
+}
+
+.terceira-secao > div {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.terceira-secao img {
+    max-width: 6.25rem;
+}
+
+.terceira-secao strong {
+    color: var(--silver);
+    font-size: 2rem;
+    line-height: 100%;
+}
+
+.terceira-secao h2 {
+    color: var(--dark-blue);
+    font-size: 1.125rem;
+    font-weight: 800;
+    line-height: 1.5rem;
+    margin-block:   0.6rem;
+}
+
+.terceira-secao a {
+    text-decoration: none;
+}
+
+.terceira-secao p {
+    font-size: 0.9375rem;
+    line-height: 1.625rem;
+    color: var(--gunmetal);
+}
+
+@media(min-width: 1110px) {
+header > button {
+        display: none;
+    }
+
+    header .desktop {
+        display: flex;
+        gap: 2.5rem;
+    }
+
+    header .desktop a {
+        font-size: 0.9375rem;
+        line-height: 1.625rem;
+        text-decoration: none;
+        color: var(--gunmetal);
+    }
+
+    header .desktop a:hover {
+        color: var(--vermillion);
+    }
+
+main {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.75rem;
+}
+
+.primeira-secao {
+    grid-column: 1 /3;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.75rem;
+}
+
+.primeira-secao picture {
+    grid-column: 1 /3;
+}
+
+.primeira-secao img {
+    margin: 0;
+}
+
+.primeira-secao h1 {
+    font-size: 3.5rem;
+}
+
+.primeira-secao button:hover {
+    background-color: var(--dark-blue);
+    cursor: pointer;
+}
+
+.primeira-secao h2 {
+    font-size: 2.5rem;
+}
+
+.terceira-secao {
+    display: flex;
+    grid-column: 1 / 4;
+}
+
+.terceira-secao h2:hover {
+    color: var(--vermillion);
+}
+
+
+}
