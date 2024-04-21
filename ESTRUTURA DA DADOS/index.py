@@ -5,10 +5,9 @@ from queue import Queue
 from datetime import datetime
 
 
-
-
 contatos = []
 mensagem = Queue()
+busca_nome_global = ""
 cont= 0
 # FUNÇÕES
 def AdicionarContato():
@@ -55,15 +54,14 @@ def MostrarContatos():
 def EditarContato():
     usuario_encontrado = False
     usario_que_sera_editado = {}
+   
     busca_nome = input("Digite o Nome do contato que você deseja alterar: ")
-
     # varre a lista para procurar se o contato existe
     for contato in contatos:
         if busca_nome == contato["nome"]:
             usuario_encontrado = True
             usario_que_sera_editado = contato
             break
-    
 
     if usuario_encontrado == True:
         #encontramos o usuario
@@ -87,60 +85,90 @@ def EditarContato():
     limparTela()
 
 def salvar_mensagem():
-    elemento = input("Digite a mensagem que deseja adicionar à fila: ")
-    data_hora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    mensagem.put([elemento, data_hora])
-    print("Elemento adicionado à fila.")
-    
+    global busca_nome_global
+    usuario_encontrado = False
+    busca_nome = input("Digite o Nome do contato que você deseja adionar a mensagem: ")
+    busca_nome_global = busca_nome
+    for contato in contatos:
+        if busca_nome == contato["nome"]:
+            usuario_encontrado = True
+            break
+    if usuario_encontrado == True:
+
+        elemento = input("Digite a mensagem que deseja adicionar à fila: ")
+        data_hora = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        mensagem.put([elemento, data_hora, busca_nome])
+        print("Elemento foi adicionado à fila, você já consegue ve a sua mensagem, ela é a última! ")
+        print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
+        for elemento in list(mensagem.queue):
+            print(elemento)
+        print("Quantidade de mensagem na fila: ",(mensagem.qsize()))
+        print("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=")
+        input("Aperte enter para continuar")
+
+        return True
+
+    elif usuario_encontrado == False:
+        print("O usuário que você digitou não existe, tente novamente ")
+        input("Aperte enter para continuar")
+
+        return False
 
 def imprimir_mensagem():
     print("Mensagem na fila:\n")
     for elemento in list(mensagem.queue):
             print(elemento)
-    print(mensagem.qsize())
+    print("Existe um total de",mensagem.qsize(),"Mesangens na fila")
     print("\nMensagem impressa.")
     input("[APERTE ENTER PARA CONTINUAR]")
 
 def Enviarmensagem():
-    # Exemplo de criação de uma mensagem
+    
+    if not mensagem.empty() == True:
 
-    usuario_encontrado = False
-    busca_nome = input("Digite o Nome do contato que você deseja adionar a mensagem: ")
+        usuario_encontrado = False
+        for contato in contatos:
+            if busca_nome_global == contato["nome"]:
+                usuario_encontrado = True
+                break
 
-    # varre a lista para procurar se o contato existe
-    for contato in contatos:
-        if busca_nome == contato["nome"]:
-            usuario_encontrado = True
-            break
+        if usuario_encontrado == True:
+            print("Mensagens da fila: \n")
+            for elemento in list(mensagem.queue):
+                print(elemento,"\n")
+            escolha = input("Você deseja enviar a primeira mensagem S/N: ").upper()
+            msg = []
+            if escolha == "S":        
+                msg_excluida = mensagem.get()
+                msg.append(msg_excluida)
 
-    if usuario_encontrado == True:
-        print("Mensagens da fila: \n")
-        for elemento in list(mensagem.queue):
-            print(elemento,"\n")
-        escolha = input("Você deseja enviar a primeira mensagem S/N: ")
-        msg = []
-        if escolha == "S":        
-            
-            msg.append(mensagem.get())
-
-            if "mensagem" in contato:
-                contato["mensagem"].append(msg) 
-            
-            else: 
-                contato ["mensagem"] = [msg]    
-            print("Mensagem Criada com Sucesso!")
+                if "mensagem" in contato:
+                    contato["mensagem"].append(msg)
+                    print("Mensagem Enviada com Sucesso!")
+                    print("Quantidade de mensagem na fila: ",(mensagem.qsize()))
+                    print("Detalhes da mensgem enviada: ", msg_excluida)
+                    input("[APERTE ENTER PARA CONTINUAR]") 
+                
+                else: 
+                    contato ["mensagem"] = [msg]   
+                    print("Mensagem Enviada com Sucesso!")
+                    print("Quantidade de mensagem na fila: ",(mensagem.qsize()))
+                    print("Detalhes da mensgem enviada: ", msg_excluida)
+                    input("[APERTE ENTER PARA CONTINUAR]")
+            else:
+                print("OK, sua Mensagem não foi enviada")
+                input("[APERTE ENTER PARA CONTINUAR]")
+                # Enviarmensagem()
+                return
         else:
-            print("mensagem não enviada")
+            print("Mensagem não enviada")
             input("[APERTE ENTER PARA CONTINUAR]")
             Enviarmensagem()
     else:
-        print("Usuário não encontrado")
-    
-    # destinatario = Contato("Contato para envio", "Numero para envio")
-    # mensagem = Mensagem(destinatario, "Mensagem", "01/01/2024")
-
-    input("[APERTE ENTER PARA CONTINUAR]")
-    limparTela()
+        print("Você não tem nenhuma mensagem em sua fila")
+        print("volte ao menu anterior e cadastre sua mensagem")
+        input("digite enter para continuar")
+        imprimirMenuPrincipal()
 
 # PROGRAMA PRINCIPAL
 print("===== SISTEMA DE MENSAGENS =====\n")
@@ -152,7 +180,9 @@ def escrever_mensagem():
         limparTela()
         opcao = input("Escolha uma opção:\n 1. escrever mensagem para a fila\n 2. Mostrar mensagens da fila\n 3. Voltar ao menu anterior\nOpção: ")
         if opcao == '1':
-            salvar_mensagem()
+            mensagem_foi_salva = salvar_mensagem()
+            if mensagem_foi_salva:
+                break
         elif opcao == '2':
             imprimir_mensagem()
         elif opcao == '3':
