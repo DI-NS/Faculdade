@@ -10,6 +10,15 @@ mensagem = Queue()
 busca_nome_global = ""
 cont= 0
 # FUNÇÕES
+
+def coletar_mensagem():
+    if not mensagem.empty():
+
+        mensagem_fila = mensagem.queue[0]
+        busca_nome = mensagem_fila[2]
+        return busca_nome
+
+
 def AdicionarContato():
  
     # ESCREVER LÓGICA AQUI!
@@ -113,7 +122,7 @@ def salvar_mensagem():
         input("Aperte enter para continuar")
 
         return False
-
+    return busca_nome_global and busca_nome
 def imprimir_mensagem():
     print("Mensagem na fila:\n")
     for elemento in list(mensagem.queue):
@@ -123,12 +132,12 @@ def imprimir_mensagem():
     input("[APERTE ENTER PARA CONTINUAR]")
 
 def Enviarmensagem():
-    
+    encontrar = coletar_mensagem()
     if not mensagem.empty() == True:
 
         usuario_encontrado = False
         for contato in contatos:
-            if busca_nome_global == contato["nome"]:
+            if encontrar == contato["nome"]:
                 usuario_encontrado = True
                 break
 
