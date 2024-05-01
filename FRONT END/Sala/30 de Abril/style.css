@@ -1,0 +1,13 @@
+/*
+    BOX MODEL
+    *NORDEL
+*/
+.primeira {
+/* Borda => largura ,estilo, cor */
+    /* Largura da borda */
+    border-width: 2px;
+    /* estilo da borda */
+    border-style: solid;
+    /* cor da borda */
+    border-color: black;
+}
