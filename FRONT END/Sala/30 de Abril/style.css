@@ -1,7 +1,11 @@
 /*
     BOX MODEL
-    *NORDEL
+    *BORDEL✔
+    *width => Largura
+    height => Altura
+
 */
+
 .primeira {
 /* Borda => largura ,estilo, cor */
     /* Largura da borda */
@@ -10,4 +14,29 @@
     border-style: solid;
     /* cor da borda */
     border-color: black;
+
+     /* Largura da borda */
+    width: 190px;
+    /* Altura */
+    height: 10px;
+    /* Preencha todos os lados */
+    padding: 100px;
+    /* Margin => espaço para elemento */
+    margin-bottom: 20px;
+    margin-inline: auto;
+}
+.segunda{
+
+    /* Shothand Border */
+    /* Shothand => vários valores para a mesma propriedade */
+    border: 2px solid violet;
+
+     /* Largura  */
+     width: 420px;
+     /* Altura */
+     height: 100px;
+     /* Preencha todos os lados */
+     padding: 20px 80px 810px;
+    /* Margin => espaço para elemento */
+    margin-top: 5px;
 }
